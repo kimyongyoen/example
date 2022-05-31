@@ -1,0 +1,184 @@
+	      // 아이디 확인
+			if ($j('#userId').val() == '') {
+				$j('#idSub').text('필수입력사항입니다.');
+					alert("아이디를 입력해주세요")
+				$j('#userId').focus();
+
+				return false;
+			
+			
+			// 비밀번호 확인
+			if ($j('#userPw').val() == '') {
+				$j('#pwSub').text('필수입력사항입니다.');
+				alert("비밀번호 양식을 맞춰 주세여")
+				$j('#userPw').focus();
+
+				return false;
+			}
+			
+			// 비밀번호 확인
+			if ($j('#userPwCk').val() == '') {
+				$j('#pwCkSub').text('*비밀번호를 확인해주세요.');
+				alert("비밀번호 확인 양식을 맞춰 주세여")
+				$j('#userPwCk').focus();
+
+				return false;
+			} 
+			
+			// 이름 확인
+			if ($j('#userName').val() == '') {
+				$j('#nameSub').text('*필수입력사항입니다.');
+				alert("이름을 입력해주세요")
+				$j('#userName').focus();
+
+				return false;
+			}
+			
+			//핸드폰 가운데 4자리 확인
+			if ($j('#userPhone2').val() == '') {
+				$j('#phoneSub2').text('*필수입력사항입니다.');
+				alert("핸드폰번호를 입력해주세요 ")
+				$j('#userPhone2').focus();
+
+				return false;
+			} 
+			
+		 	//핸드폰 마지막 4자리 확인
+			if ($j('#userPhone3').val() == '') {
+				$j('#phoneSub3').text('*필수입력사항입니다.');
+				alert("핸드폰번호를 입력해주세요 ")
+				$j('#userPhone3').focus();
+				
+				return false;
+			} 
+			
+			// 우편번호 입력값 확인
+			if ($j('#userAddr1').val() == '') {
+				$j('#Addr1Sub').text('*필수입력사항입니다.');
+				alert("우편번호를 입력해주세요 ")
+				$j('#userAddr1').focus();
+				
+				return false;
+			} 
+			
+			// 주소 입력값 확인
+			 if ($j('#userAddr2').val() == '') {
+				$j('#Company').text('*필수입력사항입니다.');
+				alert("회사명을 입력해주세요 ")
+				$j('#userAddr2').focus();
+				
+				return false;
+			}
+			
+			// 회사명
+			if ($j('#userCompany').val() == '') {
+				$j('#phoneSub').text('*필수입력사항입니다.');
+				alert("핸드폰번호룰 입력해주세요 ")
+				$j('#userCompany').focus();
+				
+				return false;
+			} 
+	 		
+			
+			// 전체 확인
+		 	if ($j('.red').text() != '') {
+				alert("회원 가입 양식에 맞춰 입력해주세요");
+				return false;
+			}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+else if ($j('.red').text() != '') {
+				alert("회원 가입 양식에 맞춰 입력해주세요");
+				return false;
+			}else{
+		    	(confirm("회원가입을 하시겠습니까?"))
+		    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+ }else if ($j('#userId').val() == '') {
+				$j('#idSub').text('필수입력사항입니다.');
+				alert("아이디를 입력해주세요")
+				$j('#userId').focus();
+				return false;
+			}else if ($j('#userPw').val() == '') {
+				$j('#pwSub').text('필수입력사항입니다.');
+				alert("비밀번호 양식을 맞춰 주세여");
+				$j('#userPw').focus();
+				return false;
+			}else if ($j('#userPwCk').val() == '') {
+				$j('#pwCkSub').text('*비밀번호를 확인해주세요.');
+				alert("비밀번호 확인 양식을 맞춰 주세여")
+				$j('#userPwCk').focus();
+				return false;
+			}else if ($j('#userName').val() == '') {
+				$j('#nameSub').text('*필수입력사항입니다.');
+				alert("이름을 입력해주세요");
+				$j('#userName').focus();
+				return false;
+			}else if ($j('#userPhone2').val() == '') {
+				$j('#userPhone2').focus();
+				alert("핸드폰번호를 입력해주세요 ")
+				$j('#phoneSub2').text('*필수입력사항입니다.');
+				return false;
+			}else if ($j('#userPhone3').val() == '') {
+				$j('#phoneSub3').text('*필수입력사항입니다.');
+				alert("핸드폰번호를 입력해주세요 ")
+				$j('#userPhone3').focus();
+				return false;
+			}else if($j('#userId').text() != ''){
+				alert("아이디를 제대로 입력해주세요");
+				$j('#userId').focus();
+				return false;
+			}else if($j('#userPw').text() != ''){
+				alert("비밀번호를 제대로 입력해주세요");
+				$j('#userPw').focus();
+				return false;
+			}else if($j('#userPwCk').text() != ''){
+				alert("비밀번호를 제대로 입력해주세요");
+				$j('#userPwCk').focus();
+				return false;
+			}else if($j('#userName').text() != ''){
+				alert("비밀번호를 제대로 입력해주세요");
+				$j('#userName').focus();
+				return false;
+			}else if($j("#userPhone2").text() != ''){
+				alert("비밀번호를 제대로 입력해주세요");
+				$j("#userPhone2").focus();
+				return false;
+			}else if($j("#userPhone3").text() != ''){
+				alert("비밀번호를 제대로 입력해주세요");
+				$j("#userPhone3").focus();
+				return false;
+			/* }else if ($j('.red').text() != '') {
+				$j("#userPhone2").focus();
+				alert("회원 가입 양식에 맞춰 입력해주세요");
+				return false;
+			}else if ($j('.red').text() != '') {
+				$j("#userPhone3").focus();
+				alert("회원 가입 양식에 맞춰 입력해주세요");
+				return false;	 */
+			}else{
+		    	(confirm("회원가입을 하시겠습니까?"))
+		    

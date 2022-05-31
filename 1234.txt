@@ -1,0 +1,370 @@
+$j(document).ready(function(){
+	//	유효성 검사를 위한 정규식
+		var idCheck = /[A-Za-z\d]{5,10}$/; //	최소5자, 최대 10자의 문자
+    	var pwCheck = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/; //	최소 6 자 최대 12자, 최소 하나의 문자 및 하나의 숫자
+    	var numberCheck = /^[0-9]{4}$/;	//	숫자만 입력해야하는 경우
+    	var nameCheck = /[a-zA-Z가-힝]/; 	//	한글, 영어만
+    	var cnt = 0;
+    	
+   
+    	// 아이디 한글 입력 방지 
+    	$( function(){
+    		$( '#userId' ).on("blur keyup", function() {
+    			$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
+    		});
+    	});
+    	
+    	// 이름 영어 입력 방지 
+    	var name = document.querySelector('#userName');
+		var onlyKorean = function(){
+ 		var pattern = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
+ 			this.value = this.value.replace(pattern, '');
+		};
+				name.addEventListener('keyup', onlyKorean);
+    	
+    	// 핸드폰2 한글입력 방지 
+    	$( function(){
+    		$( '#userPhone2' ).on("blur keyup", function() {
+    			$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
+    		});
+    	});	
+    	
+    	// 핸드폰3 한글입력 방지
+    	$( function(){
+    		$( '#userPhone3' ).on("blur keyup", function() {
+    			$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
+    		});
+    	});	
+
+	//아이디 중복 확인
+		$j(function() {
+			//idck 버튼을 클릭했을 때 
+			$j("#cnt").click(function() {
+
+				//userid 를 param.
+				var userId = $("#userId").val();
+				
+				console.log(cnt);
+				if (userId == '') {
+	    	         alert('아이디를 입력하세요.');
+	    	         $j('#userId').focus();
+	    	 
+	    	      }else{
+	    	    	  $j.ajax({
+	  					async : true,
+	  					type : 'POST',
+	  					data : userId,
+	  					url : "/user/userdupid.me",
+	  					dataType : "json",
+	  					contentType : "application/json; charset=UTF-8",
+	  					success : function(data) {
+	  						if (data.cnt > 0) {
+	  							console.log("들어온거" +cnt);
+	  							alert("아이디가 존재합니다. 다른 아이디를 입력해주세요.");
+	  							$j("#userId").focus();
+
+	  						} else {
+	  							alert("사용가능한 아이디입니다.");
+	  							console.log("여기온거" +cnt);
+	  							$j("#userPw").focus();
+	  							//아이디가 중복하지 않으면  idck = 1 
+	  							cnt = 1;
+
+	  						}
+	  					},
+	  					error : function(error) {
+
+	  						alert("error : " + error);
+	  					}
+	  				});
+	    	      
+	    	      }
+	
+			});
+		});
+		
+
+		
+		 // 비밀번호 일치여부 확인
+	      $j(function() {
+	         $j("#success").css("display", "none");
+	         $j("#danger").css("display", "none");
+	         $j("input").keyup(function() {
+	            var us_pwd = $("#userPw").val();
+	            var us_pwd2 = $("#userPwCk").val();
+	            if (us_pwd != "" || us_pwd2 != "") {
+	               if (us_pwd == us_pwd2) {
+	                  $j("#success").css("display", "block");
+	                  $j("#danger").css("display", "none");
+	               } else {
+	                  $j("#success").css("display", "none");
+	                  $j("#danger").css("display", "block");
+	               }
+	            }
+	         });
+		  });
+		
+		
+		
+	  //	 이름 //	userName의 value값과 nameCheck의 양식을 체크
+		$j("#userName").blur(function() {
+			if ($j('#userName').val() != '') {
+				if (!nameCheck.test($j('#userName').val())) { //	userName의 value값과 nameCheck의 양식을 체크
+					$j('#nameSub').text('한글만 입력 가능합니다.');
+					return false;
+					$j('#userName').focus();
+				} else {
+					$j('#nameSub').empty();
+				}
+			}
+		});
+		
+
+		//phone2  4글자 제한 
+		$j(document).ready(function() {
+
+			$j('#userPhone2').on('keyup', function() {
+				if 	($(this).val().length > 4) {
+					$(this).val($(this).val().substring(0, 4), " ");
+				}else if($(this).val().length != 4){
+					$j('#phoneSub2').text('4자리 입력해주세요');
+					$j('#userPhone2').focus();
+					return false;
+				}else {
+					$j('#phoneSub2').empty();
+				}
+			});
+
+		});
+
+		//phone3  4글자 제한 
+		$j(document).ready(function() {
+
+			$j('#userPhone3').on('keyup', function() {
+				if ($(this).val().length > 4) {
+					$(this).val($(this).val().substring(0, 4));
+				}else if($(this).val().length != 4){
+					$j('#phoneSub3').text('4자리 입력해주세요'); 
+					return false;
+				}else {
+					$j('#phoneSub3').empty();
+				}
+			});
+
+		});
+		
+		
+		// 우편변호  정규 표현식
+		$j(document).on("keyup", "#userAddr1", function() {
+			$j(this).val( $(this).val().replace(/[^0-9]/g, "")
+					.replace(/(^[0-9]{3}) ? /([0-9]{3})$/,"$1-$2")
+					.replace("--", "--")
+				);
+			if ($(this).val().length > 7) {
+				$(this).val($(this).val().substring(0, 7));
+			}else if($(this).val().length != 7){
+				$j('#Addr1Sub').text('123-123 형식에 맞게 입력해주세요'); 
+				return false;
+			}else {
+				$j('#Addr1Sub').empty();
+			}
+			
+			});
+
+
+		$j("#join").click(function() {
+			console.log("join button click test.")
+
+			var $frm = $j('#userInsert');
+			var param = $frm.serialize();
+			var userid = $("#userId").val();
+			var userPw = $("#userPw").val();
+			var userPwCk = $("#userPwCk").val();
+			var userName = $("#userName").val();
+			var userPhone2 = $("#userPhone2").val();
+			var userPhone3 = $("#userPhone3").val();
+			var userAddr1 = $("#userAddr1").val();
+			var userAddr2 = $("#userAddr2").val();
+			
+	      	if(cnt != 1){
+		            alert('아이디 중복체크를 해주세요');
+		            return false;
+		            // 아이디 확인
+					if ($j("#userId").val() == '') {
+						$j('#idSub').text('필수입력사항입니다.');
+							alert("아이디를 입력해주세요")
+						$j("#userId").focus();
+						return false;
+					}
+						
+					if ($j("#userId").text() != '') {
+							alert("아이디를 양식에 맞게 입력해주세요")
+						$j("#userId").focus();
+						return false;
+					}
+					
+					if(userid.length == 0){
+					       alert("아이디를 입력해 주세요"); 
+					    $("#userId").focus();
+					       return false;
+					   }	
+						
+					
+					// 비밀번호 확인
+					if ($j('#userPw').val() == '') {
+						$j('#pwSub').text('필수입력사항입니다.');
+						alert("비밀번호 양식을 맞춰 주세여")
+						$j('#userPw').focus();
+
+						return false;
+					}
+					
+					if ($j("#userPw").text() != '') {
+							alert("아이디를 양식에 맞게 입력해주세요")
+						$j("#userPw").focus();
+						return false;
+					}
+				
+					if(userid.length == 0){
+				       alert("아이디를 입력해 주세요"); 
+				  	  $("#userPw").focus();
+				       return false;
+				   }
+					
+					// 비밀번호 확인
+					if ($j('#userPwCk').val() == '') {
+						$j('#pwCkSub').text('*비밀번호를 확인해주세요.');
+							alert("비밀번호 확인 양식을 맞춰 주세여")
+						$j('#userPwCk').focus();
+
+						return false;
+					} 
+					
+					if ($j("#userPwCk").text() != '') {
+							alert("아이디를 양식에 맞게 입력해주세요")
+						$j("#userPwCk").focus();
+						return false;
+					}
+				
+					if(userPwCk.length == 0){
+				       alert("아이디를 입력해 주세요"); 
+				    $("#userPwCk").focus();
+				       return false;
+				   }
+					
+					
+					// 이름 확인
+					if ($j('#userName').val() == '') {
+						$j('#nameSub').text('*필수입력사항입니다.');
+							alert("이름을 입력해주세요")
+						$j('#userName').focus();
+
+						return false;
+					}
+					
+					if ($j("#userName").text() != '') {
+							alert("아이디를 양식에 맞게 입력해주세요")
+						$j("#userName").focus();
+						return false;
+					}
+			
+					if(userName.length == 0){
+			   		    alert("아이디를 입력해 주세요"); 
+				    $("#userName").focus();
+			     		  return false;
+				    }
+					
+					
+					//핸드폰 가운데 4자리 확인
+					if ($j('#userPhone2').val() == '') {
+						$j('#phoneSub2').text('*필수입력사항입니다.');
+						alert("핸드폰번호를 입력해주세요 ")
+						$j('#userPhone2').focus();
+
+						return false;
+					} 
+					
+					if ($j("#userPhone2").text() != '') {
+							alert("아이디를 양식에 맞게 입력해주세요")
+						$j("#userPhone2").focus();
+						return false;
+					}
+		
+					if(userPhone2.length == 0){
+		   			   	 alert("아이디를 입력해 주세요"); 
+			 		   $("#userPhone2").focus();
+		     			  return false;
+			 	   }
+					
+				 	//핸드폰 마지막 4자리 확인
+					if ($j('#userPhone3').val() == '') {
+						$j('#phoneSub3').text('*필수입력사항입니다.');
+						alert("핸드폰번호를 입력해주세요 ")
+						$j('#userPhone3').focus();
+						
+						return false;
+					} 
+				 	
+					if ($j("#userPhone3").text() != '') {
+							alert("아이디를 양식에 맞게 입력해주세요")
+						$j("#userPhone3").focus();
+							return false;
+					}
+	
+					if(userPhone3.length == 0){
+	   				   	 alert("아이디를 입력해 주세요"); 
+		 			   $("#userPhone3").focus();
+	     				  return false;
+		 	 	   }
+					
+					// 우편번호 입력값 확인
+					if ($j('#userAddr1').val() == '') {
+						$j('#Addr1Sub').text('*필수입력사항입니다.');
+						alert("우편번호를 입력해주세요 ")
+						$j('#userAddr1').focus();
+						
+						return false;
+					} 
+					
+					// 주소 입력값 확인
+					 if ($j('#userAddr2').val() == '') {
+						$j('#Company').text('*필수입력사항입니다.');
+						alert("회사명을 입력해주세요 ")
+						$j('#userAddr2').focus();
+						
+						return false;
+					}
+					
+					// 회사명
+					if ($j('#userCompany').val() == '') {
+						$j('#phoneSub').text('*필수입력사항입니다.');
+						alert("핸드폰번호룰 입력해주세요 ")
+						$j('#userCompany').focus();
+						
+						return false;
+					} 
+			 		
+					
+					// 전체 확인
+				 	if ($j('.red').text() != '') {
+						alert("회원 가입 양식에 맞춰 입력해주세요");
+						return false;
+					}  
+	      
+			
+			$j.ajax({
+				url : "/user/joinAction.do",
+				dataType : "json",
+				type : "POST",
+				data : param,
+				success : function(data, textStatus, jqXHR) {
+					alert("회원가입 완료");
+					location.href = "/board/boardList.do";
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert("회원가입에 실패하였습니다.");
+				}
+			});
+		
+		}; 
+	}); 
